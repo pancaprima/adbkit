@@ -16,6 +16,7 @@ HostDisconnectCommand = require './command/host/disconnect'
 HostTrackDevicesCommand = require './command/host/trackdevices'
 HostKillCommand = require './command/host/kill'
 HostTransportCommand = require './command/host/transport'
+HostBackupCommand = require './command/host/backup'
 
 ClearCommand = require './command/host-transport/clear'
 FrameBufferCommand = require './command/host-transport/framebuffer'
@@ -218,6 +219,13 @@ class Client
         new HostTransportCommand conn
           .execute serial
           .return conn
+      .nodeify callback
+
+  backup: (file, callback) ->
+    this.connection()
+      .then (conn) ->
+        new HostBackupCommand conn
+          .execute file
       .nodeify callback
 
   shell: (serial, command, callback) ->
